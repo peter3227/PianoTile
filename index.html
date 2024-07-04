@@ -2,184 +2,184 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 문자 인코딩 및 뷰포트 설정 -->
-    <title>피아노 타일 게임</title> <!-- 웹 페이지 제목 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>피아노 타일 게임</title>
     <style>
         body {
-            font-family: Arial, sans-serif; /* 폰트 설정 */
-            text-align: center; /* 텍스트 가운데 정렬 */
+            font-family: Arial, sans-serif;
+            text-align: center;
             overflow: hidden; /* 스크롤 방지 */
         }
         #gameContainer {
             width: 400px; /* 게임 영역의 너비 설정 */
             height: 600px; /* 게임 영역의 높이 설정 */
-            position: relative; /* 상대적 위치 설정 */
+            position: relative;
             margin: 0 auto; /* 가운데 정렬 */
-            border: 1px solid #000; /* 검은색 테두리 */
+            border: 1px solid #000;
             overflow: hidden; /* 타일이 영역을 벗어나지 않도록 설정 */
         }
         .tile {
-            width: 100px; /* 타일의 너비 */
+            width: 100px;
             height: 150px; /* 타일 높이를 150px로 설정 */
-            background-color: black; /* 타일의 배경색을 검은색으로 설정 */
-            position: absolute; /* 절대적 위치 설정 */
-            cursor: pointer; /* 마우스 커서를 포인터로 설정 */
-            transition: opacity 0.5s ease; /* 페이드 아웃 애니메이션 */
+            background-color: black;
+            position: absolute;
+            cursor: pointer;
+            transition: opacity 0.5s ease; /* Fade out animation */
         }
         .separator {
-            position: absolute; /* 절대적 위치 설정 */
-            background-color: gray; /* 구분선의 배경색을 회색으로 설정 */
+            position: absolute;
+            background-color: gray;
         }
         .vertical {
-            width: 1px; /* 수직 구분선의 너비 */
-            height: 100%; /* 수직 구분선의 높이 */
+            width: 1px;
+            height: 100%;
         }
         .horizontal {
-            width: 100%; /* 수평 구분선의 너비 */
-            height: 1px; /* 수평 구분선의 높이 */
+            width: 100%;
+            height: 1px;
         }
         #score {
-            font-size: 24px; /* 점수 표시 글자 크기 */
-            margin-top: 20px; /* 위쪽 여백 설정 */
+            font-size: 24px;
+            margin-top: 20px;
         }
         #gameOver {
-            display: none; /* 초기에는 표시하지 않음 */
-            font-size: 36px; /* 게임 종료 메시지 글자 크기 */
-            color: red; /* 게임 종료 메시지 색상 */
+            display: none;
+            font-size: 36px;
+            color: red;
         }
         #startButton {
-            font-size: 24px; /* 시작 버튼 글자 크기 */
-            padding: 10px 20px; /* 버튼 패딩 설정 */
-            margin-top: 20px; /* 위쪽 여백 설정 */
-            position: absolute; /* 절대적 위치 설정 */
-            top: 50%; /* 상단에서 50% 위치 */
-            left: 50%; /* 왼쪽에서 50% 위치 */
-            transform: translate(-50%, -50%); /* 중앙으로 이동 */
+            font-size: 24px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
-    <h1>피아노 타일 게임</h1> <!-- 제목 표시 -->
-    <div id="gameContainer"> <!-- 게임 컨테이너 -->
-        <div class="separator vertical" style="left: 100px;"></div> <!-- 첫 번째 수직 구분선 -->
-        <div class="separator vertical" style="left: 200px;"></div> <!-- 두 번째 수직 구분선 -->
-        <div class="separator vertical" style="left: 300px;"></div> <!-- 세 번째 수직 구분선 -->
-        <div class="separator horizontal" style="top: 150px;"></div> <!-- 첫 번째 수평 구분선 -->
-        <div class="separator horizontal" style="top: 300px;"></div> <!-- 두 번째 수평 구분선 -->
-        <div class="separator horizontal" style="top: 450px;"></div> <!-- 세 번째 수평 구분선 -->
+    <h1>피아노 타일 게임</h1>
+    <div id="gameContainer">
+        <div class="separator vertical" style="left: 100px;"></div>
+        <div class="separator vertical" style="left: 200px;"></div>
+        <div class="separator vertical" style="left: 300px;"></div>
+        <div class="separator horizontal" style="top: 150px;"></div>
+        <div class="separator horizontal" style="top: 300px;"></div>
+        <div class="separator horizontal" style="top: 450px;"></div>
     </div>
-    <div id="score">점수: 0</div> <!-- 점수 표시 -->
-    <div id="gameOver">게임 종료</div> <!-- 게임 종료 메시지 -->
-    <button id="startButton">게임 시작</button> <!-- 시작 버튼 -->
+    <div id="score">점수: 0</div>
+    <div id="gameOver">게임 종료</div>
+    <button id="startButton">게임 시작</button>
 
     <script>
-        const gameContainer = document.getElementById('gameContainer'); // 게임 컨테이너 요소 선택
-        const scoreDisplay = document.getElementById('score'); // 점수 표시 요소 선택
-        const gameOverDisplay = document.getElementById('gameOver'); // 게임 종료 메시지 요소 선택
-        const startButton = document.getElementById('startButton'); // 시작 버튼 요소 선택
-        const containerHeight = gameContainer.clientHeight; // 게임 컨테이너의 높이
+        const gameContainer = document.getElementById('gameContainer');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverDisplay = document.getElementById('gameOver');
+        const startButton = document.getElementById('startButton');
+        const containerHeight = gameContainer.clientHeight;
         let tileSpeed = 5; // 타일의 초기 속도 (px/frame)
-        const tileWidth = 100; // 타일의 너비
+        const tileWidth = 100;
         const tileHeight = 150; // 타일의 높이 변경
         const positions = [0, 100, 200, 300]; // 타일의 가능한 x 좌표
-        let score = 0; // 초기 점수
-        let gameInterval; // 게임 루프를 위한 인터벌 변수
-        let tileCreationDelay = 1000; // 타일 생성 간격 (ms)
+        let score = 0;
+        let gameInterval;
+        let tileCreationDelay = 1000; // Initial delay between tile appearances (ms)
 
         function playSound(src) {
-            const sound = new Audio(src); // 새로운 오디오 객체 생성
-            sound.play(); // 소리 재생
+            const sound = new Audio(src);
+            sound.play();
         }
 
         function createTile() {
-            const existingTiles = document.querySelectorAll('.tile'); // 현재 존재하는 모든 타일 선택
+            const existingTiles = document.querySelectorAll('.tile');
             const availablePositions = positions.filter(pos => {
-                return !Array.from(existingTiles).some(tile => parseInt(tile.style.left) === pos); // 현재 타일이 없는 위치 필터링
+                return !Array.from(existingTiles).some(tile => parseInt(tile.style.left) === pos);
             });
 
-            if (availablePositions.length > 0) { // 사용할 수 있는 위치가 있으면
-                const randomIndex = Math.floor(Math.random() * availablePositions.length); // 무작위 위치 선택
-                const left = availablePositions[randomIndex]; // 선택된 위치의 x 좌표
-                let tile = document.createElement('div'); // 새로운 타일 생성
-                tile.classList.add('tile'); // 타일 클래스 추가
-                tile.style.left = left + 'px'; // 타일의 x 좌표 설정
+            if (availablePositions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availablePositions.length);
+                const left = availablePositions[randomIndex];
+                let tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.style.left = left + 'px';
                 tile.style.top = '-150px'; // 처음 위치를 화면 위쪽으로 설정
                 tile.onclick = function() {
-                    handleTileClick(tile); // 타일 클릭 핸들러
+                    handleTileClick(tile);
                 };
-                gameContainer.appendChild(tile); // 게임 컨테이너에 타일 추가
+                gameContainer.appendChild(tile);
             }
         }
 
         function handleTileClick(tile) {
-            playSound('do.wav'); // 소리 재생
-            tile.style.opacity = 0; // 페이드 아웃 시작
+            playSound('do.wav');
+            tile.style.opacity = 0; // Start fade-out animation
             setTimeout(() => {
-                tile.remove(); // 페이드 아웃 완료 후 타일 제거
-            }, 500); // 0.5초 후 제거
-            score++; // 점수 증가
-            scoreDisplay.textContent = `점수: ${score}`; // 점수 표시 업데이트
+                tile.remove(); // Remove tile after animation completes
+            }, 500); // Wait for 0.5s (same duration as transition) before removing
+            score++;
+            scoreDisplay.textContent = 점수: ${score};
             if (score % 10 === 0) { // 10점마다 속도 증가
-                tileSpeed++; // 타일 속도 증가
+                tileSpeed++;
             }
         }
 
         function generateTiles() {
-            createTile(); // 새로운 타일 생성
-            setTimeout(generateTiles, tileCreationDelay); // 일정 시간 후 다시 타일 생성
+            createTile();
+            setTimeout(generateTiles, tileCreationDelay); // Schedule next tile creation
         }
 
         function moveTiles() {
-            const tiles = document.querySelectorAll('.tile'); // 모든 타일 선택
+            const tiles = document.querySelectorAll('.tile');
             tiles.forEach(tile => {
-                let currentTop = parseInt(tile.style.top); // 현재 타일의 y 좌표
-                if (currentTop >= 500) { // 타일이 하단에 도달하면
-                    gameOver(); // 게임 종료
+                let currentTop = parseInt(tile.style.top);
+                if (currentTop >= 500) {
+                    gameOver();
                 } else {
-                    tile.style.top = (currentTop + tileSpeed) + 'px'; // 타일을 아래로 이동
+                    tile.style.top = (currentTop + tileSpeed) + 'px';
                 }
             });
         }
 
         function gameLoop() {
-            generateTiles(); // 타일 생성
-            moveTiles(); // 타일 이동
+            generateTiles();
+            moveTiles();
         }
 
         function gameOver() {
-            clearInterval(gameInterval); // 게임 루프 중지
-            gameOverDisplay.style.display = 'block'; // 게임 종료 메시지 표시
-            gameContainer.innerHTML = ` 
+            clearInterval(gameInterval);
+            gameOverDisplay.style.display = 'block';
+            gameContainer.innerHTML = 
                 <div class="separator vertical" style="left: 100px;"></div>
                 <div class="separator vertical" style="left: 200px;"></div>
                 <div class="separator vertical" style="left: 300px;"></div>
                 <div class="separator horizontal" style="top: 150px;"></div>
                 <div class="separator horizontal" style="top: 300px;"></div>
                 <div class="separator horizontal" style="top: 450px;"></div>
-            `; // 게임 컨테이너 초기화
-            startButton.style.display = 'block'; // 시작 버튼 표시
+            ;
+            startButton.style.display = 'block';
         }
 
         function startGame() {
-            score = 0; // 점수 초기화
-            tileSpeed = 5; // 타일 속도 초기화
-            scoreDisplay.textContent = `점수: ${score}`; // 점수 표시 초기화
-            gameOverDisplay.style.display = 'none'; // 게임 종료 메시지 숨김
-            startButton.style.display = 'none'; // 시작 버튼 숨김
-            gameInterval = setInterval(gameLoop, 50); // 50ms마다 게임 루프 실행
+            score = 0;
+            tileSpeed = 5;
+            scoreDisplay.textContent = 점수: ${score};
+            gameOverDisplay.style.display = 'none';
+            startButton.style.display = 'none';
+            gameInterval = setInterval(gameLoop, 50); // 50ms마다 게임 루프 실행 (타일 생성 및 이동)
         }
 
-        startButton.addEventListener('click', startGame); // 시작 버튼 클릭 이벤트 리스너 추가
+        startButton.addEventListener('click', startGame);
 
-        function check
-
-GameEnd(e) {
-            if (e.target === gameContainer) { // 게임 컨테이너 클릭 시
-                gameOver(); // 게임 종료
+        function checkGameEnd(e) {
+            if (e.target === gameContainer) {
+                gameOver();
             }
         }
 
-        gameContainer.addEventListener('click', checkGameEnd); // 게임 컨테이너 클릭 이벤트 리스너 추가
+        // Add event listener to detect clicks outside tiles
+        gameContainer.addEventListener('click', checkGameEnd);
     </script>
 </body>
 </html>
+
