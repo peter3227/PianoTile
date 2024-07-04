@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -172,3 +173,14 @@
         startButton.addEventListener('click', startGame); // 시작 버튼 클릭 이벤트 리스너 추가
 
         function check
+
+GameEnd(e) {
+            if (e.target === gameContainer) { // 게임 컨테이너 클릭 시
+                gameOver(); // 게임 종료
+            }
+        }
+
+        gameContainer.addEventListener('click', checkGameEnd); // 게임 컨테이너 클릭 이벤트 리스너 추가
+    </script>
+</body>
+</html>
